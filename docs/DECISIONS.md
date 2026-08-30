@@ -591,3 +591,39 @@ Examples of intentionally excluded features:
 - code editing
 - AI code generation
 - unnecessary dashboards
+
+---
+
+# ADR-016 — Deployment Strategy
+
+## Status
+
+Accepted
+
+## Decision
+
+The application will be deployed across specialized free-tier services rather than a single monolith instance:
+
+- **Next.js Frontend:** Vercel (free hobby tier)
+- **FastAPI Backend:** Containerized via Docker and deployed to a free container host (e.g., Railway or Render)
+- **Database:** Supabase (PostgreSQL + pgvector on free tier)
+
+## Context
+
+The application is a modular monolith but divided into a Next.js client and a Python backend. Deploying the Python application on Vercel is possible but often problematic for heavy ML libraries like `torch` and `sentence-transformers` due to serverless function size limits and startup times.
+
+## Why
+
+1. **Vercel for Frontend:** Vercel provides the absolute best Developer Experience and performance for Next.js applications with zero configuration.
+2. **Container Host for Backend:** Using a long-running Docker container for FastAPI allows `sentence-transformers` to remain loaded in memory, avoiding cold-start penalties when generating embeddings for codebase searches.
+3. **Supabase for Database:** As decided in ADR-001, providing a fully managed, vector-search capable Postgres instance.
+
+## Alternatives Considered
+
+- Deploying both frontend and backend to a single VM (e.g., Fly.io or AWS EC2).
+- Deploying FastAPI to Vercel Serverless Functions.
+
+## Why They Were Rejected
+
+- Vercel serverless functions have a 250MB size limit (unzipped), which `torch` alone easily exceeds, preventing the backend from deploying successfully.
+- Managing our own single VM requires more operational overhead (nginx, domain routing, SSL certificates) compared to specialized PaaS providers.
