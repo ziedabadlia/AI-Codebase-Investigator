@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from app.api.routes.repositories import router as repositories_router
 from app.api.routes.investigate import router as investigate_router
+from app.api.routes.stream import router as stream_router
 
 # Load environment files
 load_dotenv()
@@ -47,6 +48,7 @@ def read_health():
 # Register routers
 app.include_router(repositories_router)
 app.include_router(investigate_router)
+app.include_router(stream_router)
 
 if __name__ == "__main__":
     import uvicorn
