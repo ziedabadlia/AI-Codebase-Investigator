@@ -1,0 +1,30 @@
+# Node.js
+node_modules/
+.next/
+dist/
+build/
+.turbo/
+apps/web/.env.local
+apps/web/.env.production.local
+apps/web/.env.development.local
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases & configurations
+*.db
+*.sqlite
+.env
+.env.local
+.env.development
+.env.production
+
+# OS Files
+.DS_Store
+Thumbs.db
