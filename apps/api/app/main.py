@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
+from app.api.routes.repositories import router as repositories_router
+
 # Load environment files
 load_dotenv()
 
@@ -40,6 +42,9 @@ def read_health():
         "version": "0.1.0",
         "environment": os.getenv("ENVIRONMENT", "development")
     }
+
+# Register routers
+app.include_router(repositories_router)
 
 if __name__ == "__main__":
     import uvicorn
